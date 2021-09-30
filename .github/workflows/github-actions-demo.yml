@@ -29,7 +29,7 @@ jobs:
         id: latest_version
         uses: abatilo/release-info-action@v1.3.0
         with:
-          owner: rp01
+          owner: rp-01
           repo: react-query-starwars
       - name: Example of consumption of the output
         env:
