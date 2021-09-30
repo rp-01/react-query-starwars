@@ -29,8 +29,8 @@ jobs:
         id: latest_version
         uses: abatilo/release-info-action@v1.3.0
         with:
-          owner: abatilo
-          repo: release-info-action
+          owner: rp01
+          repo: react-query-starwars
       - name: Example of consumption of the output
         env:
           LATEST: ${{ steps.latest_version.outputs.latest_tag }}
