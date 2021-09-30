@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 name: GitHub Actions fetch release info
 # on: 
 #   release:
@@ -20,6 +21,14 @@ name: GitHub Actions fetch release info
 on: push
 
 name: Example
+=======
+name: GitHub Actions Demo
+on: 
+
+  release:
+    types: [published]
+
+>>>>>>> 08289194869e8301011e6b8cadf48a6f295f79c2
 jobs:
   latest-version:
     name: Get Latest Release
