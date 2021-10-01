@@ -6,4 +6,4 @@ pwd
 find -name "requirements.txt"
 pip install -r ./.github/actions/auto-generate-changelog/requirements.txt
 
-python /main.py
+python ./.github/actions/auto-generate-changelog/main.py
