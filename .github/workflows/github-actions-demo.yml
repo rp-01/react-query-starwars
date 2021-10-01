@@ -10,7 +10,7 @@ jobs:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
-    - uses: BobAnkh/auto-generate-changelog@master
+    - uses: rp-01/docker-action-test@main
       with:
         REPO_NAME: 'rp-01/react-query-starwars'
         ACCESS_TOKEN: ${{secrets.GITHUB_TOKEN}}
