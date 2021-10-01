@@ -6,7 +6,7 @@ on:
   push:
     branches:
       - main
-#update
+
 jobs:
   generate-changelog:
     runs-on: ubuntu-latest
@@ -15,9 +15,9 @@ jobs:
       with:
         fetch-depth: 0
 
-    - uses: rp-01/docker-action-test@master
+    - uses: rp-01/react-query-starwars/.github/actions/auto-generate-changelog
       with:
-        REPO_NAME: 'rp-01/react-query-starwars/.github/actions/auto-generate-changelog'
+        REPO_NAME: ''
         ACCESS_TOKEN: ${{secrets.GITHUB_TOKEN}}
         PATH: '../../CHANGELOG.md'
 
