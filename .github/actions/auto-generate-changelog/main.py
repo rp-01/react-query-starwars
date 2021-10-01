@@ -385,6 +385,7 @@ def main():
     COMMITTER = get_inputs('COMMITTER')
     part_name = re.split(r'\s?,\s?', get_inputs('TYPE'))
     changelog = GithubChangelog(ACCESS_TOKEN, REPO_NAME, PATH, BRANCH, PULL_REQUEST, COMMIT_MESSAGE, COMMITTER)
+    print(f'value of changelog: {changelog}')
     changelog.get_data()
 
     CHANGELOG = generate_changelog(changelog.read_releases(), part_name)
