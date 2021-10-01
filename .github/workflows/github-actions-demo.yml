@@ -6,7 +6,7 @@ on:
   push:
     branches:
       - main
-
+#update
 jobs:
   generate-changelog:
     runs-on: ubuntu-latest
