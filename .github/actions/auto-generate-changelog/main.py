@@ -134,8 +134,8 @@ class GithubChangelog:
         # References: https://pygithub.readthedocs.io/en/latest/github_objects/Repository.html#github.Repository.Repository
         g = github.Github(ACCESS_TOKEN)
         self.__repo = g.get_repo(REPO_NAME)
-        print(f'hey its: {COMMITTER}')
-        self.__author = github.GithubObject.NotSet if COMMITTER == '' else github.InputGitAuthor(COMMITTER.split(' ')[0], COMMITTER.split(' ')[1])
+        print(COMMITTER == None)
+        self.__author = github.GithubObject.NotSet if (COMMITTER == '' or COMMITTER == None) else github.InputGitAuthor(COMMITTER.split(' ')[0], COMMITTER.split(' ')[1])
 
     def get_data(self):
         # get release info
