@@ -138,6 +138,7 @@ class GithubChangelog:
         self.__author = github.GithubObject.NotSet if (COMMITTER == '' or COMMITTER == None) else github.InputGitAuthor(COMMITTER.split(' ')[0], COMMITTER.split(' ')[1])
 
     def get_data(self):
+        print(f'value of self is: {self}')
         # get release info
         releases = self.__repo.get_releases()
         self.__releases['Unreleased'] = {'html_url': '', 'body': '', 'created_at': '', 'commit_sha': ''}
