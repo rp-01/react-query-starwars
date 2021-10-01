@@ -15,7 +15,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - uses: rp-01/react-query-starwars/.github/actions/auto-generate-changelog
+    - uses: rp-01/react-query-starwars/.github/actions/auto-generate-changelog@main
       with:
         REPO_NAME: ''
         ACCESS_TOKEN: ${{secrets.GITHUB_TOKEN}}
