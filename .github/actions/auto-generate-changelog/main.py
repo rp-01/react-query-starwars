@@ -63,7 +63,6 @@ def get_inputs(input_name: str, prefix='INPUT') -> str:
     ----------
     [1] https://help.github.com/en/actions/automating-your-workflow-with-github-actions/metadata-syntax-for-github-actions#example
     '''
-    print(os.getenv(prefix + '_{}'.format(input_name).upper()))
     return os.getenv(prefix + '_{}'.format(input_name).upper())
 
 
@@ -135,11 +134,9 @@ class GithubChangelog:
         # References: https://pygithub.readthedocs.io/en/latest/github_objects/Repository.html#github.Repository.Repository
         g = github.Github(ACCESS_TOKEN)
         self.__repo = g.get_repo(REPO_NAME)
-        print(COMMITTER == None)
         self.__author = github.GithubObject.NotSet if (COMMITTER == '' or COMMITTER == None) else github.InputGitAuthor(COMMITTER.split(' ')[0], COMMITTER.split(' ')[1])
 
     def get_data(self):
-        print(f'value of self is: {self}')
         # get release info
         releases = self.__repo.get_releases()
         self.__releases['Unreleased'] = {'html_url': '', 'body': '', 'created_at': '', 'commit_sha': ''}
@@ -389,7 +386,8 @@ def main():
     print(f'repo name: {REPO_NAME}')
     print(f'path name: {PATH}')
     print(f'commiter name: {COMMITTER}')
-    
+    print('access token {ACCESS_TOKEN}')
+    print(f'branch {BRANCH}')
     changelog.get_data()
     CHANGELOG = generate_changelog(changelog.read_releases(), part_name)
 
