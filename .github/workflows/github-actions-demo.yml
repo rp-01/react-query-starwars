@@ -1,8 +1,8 @@
 
 name: Generate changelog
 on:
-release:
-#     types: [created, edited]
+  release:
+    types: [created, edited]
 
 
 jobs:
