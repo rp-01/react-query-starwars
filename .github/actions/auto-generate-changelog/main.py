@@ -63,6 +63,7 @@ def get_inputs(input_name: str, prefix='INPUT') -> str:
     ----------
     [1] https://help.github.com/en/actions/automating-your-workflow-with-github-actions/metadata-syntax-for-github-actions#example
     '''
+    print(os.getenv(prefix + '_{}'.format(input_name).upper()))
     return os.getenv(prefix + '_{}'.format(input_name).upper())
 
 
