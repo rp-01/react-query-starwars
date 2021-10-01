@@ -1,7 +1,7 @@
 name: Generate changelog
 on:
   pull_request:
-    brances:
+    branches:
       - main
   push:
     branches:
@@ -15,7 +15,7 @@ jobs:
         fetch-depth: 0
     - uses: rp-01/docker-action-test@master
       with:
-        REPO_NAME: 'rp-01/react-query-starwars'
+        REPO_NAME: 'rp-01/react-query-starwars/.github/actions/auto-generate-changelog'
         ACCESS_TOKEN: ${{secrets.GITHUB_TOKEN}}
         PATH: '../../CHANGELOG.md'
         COMMIT_MESSAGE: 'docs(CHANGELOG): update release notes'
