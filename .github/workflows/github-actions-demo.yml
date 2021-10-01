@@ -6,6 +6,7 @@ on:
   push:
     branches:
       - main
+
 jobs:
   generate-changelog:
     runs-on: ubuntu-latest
@@ -13,10 +14,12 @@ jobs:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
+
     - uses: rp-01/docker-action-test@master
       with:
         REPO_NAME: 'rp-01/react-query-starwars/.github/actions/auto-generate-changelog'
         ACCESS_TOKEN: ${{secrets.GITHUB_TOKEN}}
         PATH: '../../CHANGELOG.md'
+
         COMMIT_MESSAGE: 'docs(CHANGELOG): update release notes'
         TYPE: 'feat:Feature,fix:Bug Fixes,docs:Documentation,refactor:Refactor,perf:Performance Improvements'
