@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [v1.1.2](https://github.com/rp-01/react-query-starwars/releases/tag/v1.1.2) - 2021-10-04 20:48:31
+
+*No description*
+
 ## [v1.1.1](https://github.com/rp-01/react-query-starwars/releases/tag/v1.1.1) - 2021-10-04 20:48:31
 
 test actions event on release.
