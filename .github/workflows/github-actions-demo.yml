@@ -18,7 +18,6 @@ jobs:
     # - uses: rp-01/react-query-starwars/.github/actions/auto-generate-changelog@main
     - uses: BobAnkh/auto-generate-changelog@master
       with:
-        REPO_NAME: 'rp-01/react-query-starwars'
         ACCESS_TOKEN: ${{secrets.GITHUB_TOKEN}}
         PATH: '../../CHANGELOG.md'
 
