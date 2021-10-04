@@ -3,8 +3,8 @@ on:
     types: [created, edited]
   push:
     branches: 
-      - main
       - ss-366
+
 jobs:
   generate-changelog:
     runs-on: ubuntu-latest
