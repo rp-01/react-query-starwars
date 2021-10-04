@@ -12,7 +12,6 @@ jobs:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
-    # - uses: BobAnkh/auto-generate-changelog@master
     - uses: rp-01/react-query-starwars/.github/actions/auto-generate-changelog@ss-366
       with:
         REPO_NAME: ''
@@ -20,3 +19,4 @@ jobs:
         PATH: 'src/CHANGELOG.md'
         COMMIT_MESSAGE: 'docs(CHANGELOG): update release notes'
         TYPE: 'feat:Feature,fix:Bug Fixes,docs:Documentation,refactor:Refactor,perf:Performance Improvements'
+        BRANCH: "ss-366"
