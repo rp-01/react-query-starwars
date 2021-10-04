@@ -1,10 +1,8 @@
-name: Generate changelog
 on:
-  pull_request:
-    branches:
-      - main
+  release:
+    types: [created, edited]
   push:
-    branches:
+    branches: 
       - main
 
 jobs:
@@ -14,12 +12,9 @@ jobs:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
-
-    # - uses: rp-01/react-query-starwars/.github/actions/auto-generate-changelog@main
     - uses: BobAnkh/auto-generate-changelog@master
       with:
         ACCESS_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        PATH: '../../CHANGELOG.md'
-
+        PATH: '/CHANGELOG.md'
         COMMIT_MESSAGE: 'docs(CHANGELOG): update release notes'
         TYPE: 'feat:Feature,fix:Bug Fixes,docs:Documentation,refactor:Refactor,perf:Performance Improvements'
