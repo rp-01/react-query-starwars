@@ -1,9 +1,8 @@
 on:
   release:
+      branches: 
+      - main
     types: [created, edited]
-  push:
-    branches: 
-      - ss-366
 
 jobs:
   generate-changelog:
@@ -20,4 +19,4 @@ jobs:
         PATH: 'src/CHANGELOG.md'
         COMMIT_MESSAGE: 'docs(CHANGELOG): update release notes'
         TYPE: 'feat:Feature,fix:Bug Fixes,docs:Documentation,refactor:Refactor,perf:Performance Improvements'
-        BRANCH: "ss-366"
+        BRANCH: "main"
