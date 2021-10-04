@@ -18,7 +18,7 @@ jobs:
     - uses: rp-01/react-query-starwars/.github/actions/auto-generate-changelog@main
     # - uses: rp-01/docker-action-test@main
       with:
-        REPO_NAME: ''
+        REPO_NAME: 'rp-01/react-query-starwars'
         ACCESS_TOKEN: ${{secrets.GITHUB_TOKEN}}
         PATH: '../../CHANGELOG.md'
 
