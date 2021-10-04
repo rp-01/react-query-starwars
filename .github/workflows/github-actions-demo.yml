@@ -1,9 +1,8 @@
 on:
   release:
-    types: [created, edited]
-  push:
     branches: 
-      - ss-366
+      - main
+    types: [created, edited]
 
 jobs:
   generate-changelog:
@@ -12,11 +11,12 @@ jobs:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
-    - uses: rp-01/react-query-starwars/.github/actions/auto-generate-changelog@ss-366
+    # - uses: BobAnkh/auto-generate-changelog@masters
+    - uses: rp-01/react-query-starwars/.github/actions/auto-generate-changelog@main
       with:
         REPO_NAME: ''
         ACCESS_TOKEN: ${{secrets.GITHUB_TOKEN}}
         PATH: 'src/CHANGELOG.md'
         COMMIT_MESSAGE: 'docs(CHANGELOG): update release notes'
         TYPE: 'feat:Feature,fix:Bug Fixes,docs:Documentation,refactor:Refactor,perf:Performance Improvements'
-        BRANCH: "ss-366"
+        BRANCH: "main"
