@@ -3,7 +3,7 @@ on:
     types: [created, edited]
   push:
     branches: 
-      - main
+      - ss-366
 
 jobs:
   generate-changelog:
@@ -13,7 +13,7 @@ jobs:
       with:
         fetch-depth: 0
     # - uses: BobAnkh/auto-generate-changelog@master
-    - uses: rp-01/react-query-starwars/.github/actions/auto-generate-changelog@master
+    - uses: rp-01/react-query-starwars/.github/actions/auto-generate-changelog@ss-366
       with:
         REPO_NAME: ''
         ACCESS_TOKEN: ${{secrets.GITHUB_TOKEN}}
