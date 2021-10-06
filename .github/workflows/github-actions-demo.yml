@@ -4,7 +4,8 @@ on:
       - main
     types: [created, edited]
   push:
-    - test-branch
+    branches:
+      - test-branch
 
 
 jobs:
