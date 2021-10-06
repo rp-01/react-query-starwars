@@ -141,6 +141,7 @@ class GithubChangelog:
         self.__author = github.GithubObject.NotSet if COMMITTER == '' else github.InputGitAuthor(COMMITTER.split(' ')[0], COMMITTER.split(' ')[1])
 
     def get_data(self):
+        print(f'self: {self}')
         # get release info
         releases = self.__repo.get_releases()
         self.__releases['Unreleased'] = {'html_url': '', 'body': '', 'created_at': '', 'commit_sha': ''}
@@ -394,8 +395,7 @@ def main():
     part_name = re.split(r'\s?,\s?', get_inputs('TYPE'))
     print(f'part_name: {part_name}')
     changelog = GithubChangelog(ACCESS_TOKEN, REPO_NAME, PATH, BRANCH, PULL_REQUEST, COMMIT_MESSAGE, COMMITTER)
-    print(changelog._GithubChangelog__path)
-    # changelog.get_data()
+    changelog.get_data()
     # CHANGELOG = generate_changelog(changelog.read_releases(), part_name)
     # changelog.write_data(CHANGELOG)
     # if args.mode == 'local':
