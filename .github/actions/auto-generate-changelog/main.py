@@ -393,10 +393,11 @@ def main():
     COMMITTER = get_inputs('COMMITTER')
     part_name = re.split(r'\s?,\s?', get_inputs('TYPE'))
     print(f'part_name: {part_name}')
-    # changelog = GithubChangelog(ACCESS_TOKEN, REPO_NAME, PATH, BRANCH, PULL_REQUEST, COMMIT_MESSAGE, COMMITTER)
+    changelog = GithubChangelog(ACCESS_TOKEN, REPO_NAME, PATH, BRANCH, PULL_REQUEST, COMMIT_MESSAGE, COMMITTER)
+    print(changelog.__author)
     # changelog.get_data()
     # CHANGELOG = generate_changelog(changelog.read_releases(), part_name)
-
+    # changelog.write_data(CHANGELOG)
     # if args.mode == 'local':
     #     with open(args.output, 'w', encoding='utf-8') as f:
     #         f.write(CHANGELOG)
