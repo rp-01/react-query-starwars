@@ -383,6 +383,7 @@ def main():
     print(f'Repo Name1: {REPO_NAME}')
     PATH = get_inputs('PATH')
     BRANCH = get_inputs('BRANCH')
+    print(f'Branch name:{BRANCH}')
     # if BRANCH == '':
     #     BRANCH = github.GithubObject.NotSet
     # PULL_REQUEST = get_inputs('PULL_REQUEST')
@@ -398,6 +399,7 @@ def main():
     #         f.write(CHANGELOG)
     # else:
     #     changelog.write_data(CHANGELOG)
+
 
 
 if __name__ == '__main__':
