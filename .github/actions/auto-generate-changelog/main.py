@@ -64,7 +64,9 @@ def get_inputs(input_name: str, prefix='INPUT') -> str:
     ----------
     [1] https://help.github.com/en/actions/automating-your-workflow-with-github-actions/metadata-syntax-for-github-actions#example
     '''
+    print(os.getenv(prefix + '_{}'.format(input_name).upper()))
     return os.getenv(prefix + '_{}'.format(input_name).upper())
+    
 
 
 # def set_env_from_file(file, args, prefix='INPUT'):
@@ -384,12 +386,13 @@ def main():
     PATH = get_inputs('PATH')
     BRANCH = get_inputs('BRANCH')
     print(f'Branch name:{BRANCH}')
-    # if BRANCH == '':
-    #     BRANCH = github.GithubObject.NotSet
-    # PULL_REQUEST = get_inputs('PULL_REQUEST')
-    # COMMIT_MESSAGE = get_inputs('COMMIT_MESSAGE')
-    # COMMITTER = get_inputs('COMMITTER')
-    # part_name = re.split(r'\s?,\s?', get_inputs('TYPE'))
+    if BRANCH == '':
+        BRANCH = github.GithubObject.NotSet
+    PULL_REQUEST = get_inputs('PULL_REQUEST')
+    COMMIT_MESSAGE = get_inputs('COMMIT_MESSAGE')
+    COMMITTER = get_inputs('COMMITTER')
+    part_name = re.split(r'\s?,\s?', get_inputs('TYPE'))
+    print(f'part_name: {part_name}')
     # changelog = GithubChangelog(ACCESS_TOKEN, REPO_NAME, PATH, BRANCH, PULL_REQUEST, COMMIT_MESSAGE, COMMITTER)
     # changelog.get_data()
     # CHANGELOG = generate_changelog(changelog.read_releases(), part_name)
