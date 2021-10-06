@@ -1,9 +1,6 @@
 name: "Auto-generate CHANGELOG"
 description: "Generate CHANGELOG according to conventional commits automatically when released"
-author: "rp-01"
-branding:
-  icon: 'award'
-  color: 'orange'
+author: "rp-01"   
 inputs:
   REPO_NAME:
     description: "The name of the repo: user/repo_name"

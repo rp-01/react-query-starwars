@@ -52,6 +52,7 @@ def set_local_env(env_name: str, env_value: str, prefix='INPUT'):
 
 
 def get_inputs(input_name: str, prefix='INPUT') -> str:
+    print("get_inputs called...")
     '''
     Get a Github actions input by name
     Args:
@@ -67,6 +68,7 @@ def get_inputs(input_name: str, prefix='INPUT') -> str:
 
 
 def set_env_from_file(file, args, prefix='INPUT'):
+    print('set_env_from_file called')
     '''
     Set env when use local-dev mode
     Args:
@@ -363,6 +365,7 @@ def generate_changelog(releases, part_name):
 
 def main():
     args = argument_parser()
+    print(args)
     if args.mode == 'local':
         set_env_from_file(args.file, args)
     elif args.mode == 'github':
@@ -370,32 +373,31 @@ def main():
     else:
         print("Illegal mode option, please type \'-h\' to read the help")
         os.exit()
+    print(f"args mode: {args.mode}")
     ACCESS_TOKEN = get_inputs('ACCESS_TOKEN')
+    print(f'Access Token: {ACCESS_TOKEN}')
     REPO_NAME = get_inputs('REPO_NAME')
+    print(f"Repo name: {REPO_NAME}")
     if REPO_NAME == '':
         REPO_NAME = get_inputs('REPOSITORY', 'GITHUB')
+    print(f'Repo Name1: {REPO_NAME}')
     PATH = get_inputs('PATH')
     BRANCH = get_inputs('BRANCH')
-    if BRANCH == '':
-        BRANCH = github.GithubObject.NotSet
-    PULL_REQUEST = get_inputs('PULL_REQUEST')
-    COMMIT_MESSAGE = get_inputs('COMMIT_MESSAGE')
-    COMMITTER = get_inputs('COMMITTER')
-    part_name = re.split(r'\s?,\s?', get_inputs('TYPE'))
-    changelog = GithubChangelog(ACCESS_TOKEN, REPO_NAME, PATH, BRANCH, PULL_REQUEST, COMMIT_MESSAGE, COMMITTER)
-    print(f'repo name: {REPO_NAME}')
-    print(f'path name: {PATH}')
-    print(f'commiter name: {COMMITTER}')
-    print('access token {ACCESS_TOKEN}')
-    print(f'branch {BRANCH}')
-    changelog.get_data()
-    CHANGELOG = generate_changelog(changelog.read_releases(), part_name)
+    # if BRANCH == '':
+    #     BRANCH = github.GithubObject.NotSet
+    # PULL_REQUEST = get_inputs('PULL_REQUEST')
+    # COMMIT_MESSAGE = get_inputs('COMMIT_MESSAGE')
+    # COMMITTER = get_inputs('COMMITTER')
+    # part_name = re.split(r'\s?,\s?', get_inputs('TYPE'))
+    # changelog = GithubChangelog(ACCESS_TOKEN, REPO_NAME, PATH, BRANCH, PULL_REQUEST, COMMIT_MESSAGE, COMMITTER)
+    # changelog.get_data()
+    # CHANGELOG = generate_changelog(changelog.read_releases(), part_name)
 
-    if args.mode == 'local':
-        with open(args.output, 'w', encoding='utf-8') as f:
-            f.write(CHANGELOG)
-    else:
-        changelog.write_data(CHANGELOG)
+    # if args.mode == 'local':
+    #     with open(args.output, 'w', encoding='utf-8') as f:
+    #         f.write(CHANGELOG)
+    # else:
+    #     changelog.write_data(CHANGELOG)
 
 
 if __name__ == '__main__':
