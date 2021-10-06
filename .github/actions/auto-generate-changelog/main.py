@@ -18,26 +18,26 @@ import yaml
 from tqdm import tqdm
 
 
-def argument_parser():
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        '-m',
-        '--mode',
-        help=
-        'choose to use local-dev mode or on github action mode. Valid values are \'local\' or \'github\'',
-        default='github')
-    parser.add_argument(
-        '-f',
-        '--file',
-        help='configuration file to read from when running local-dev mode',
-        default='.github/workflows/changelog.yml')
-    parser.add_argument('-o',
-                        '--output',
-                        help='output file when running local-dev mode',
-                        default='local-dev.md')
-    parser.add_argument('-t', '--token', help='Github Access Token')
-    args = parser.parse_args()
-    return args
+# def argument_parser():
+#     parser = argparse.ArgumentParser()
+#     parser.add_argument(
+#         '-m',
+#         '--mode',
+#         help=
+#         'choose to use local-dev mode or on github action mode. Valid values are \'local\' or \'github\'',
+#         default='github')
+#     parser.add_argument(
+#         '-f',
+#         '--file',
+#         help='configuration file to read from when running local-dev mode',
+#         default='.github/workflows/changelog.yml')
+#     parser.add_argument('-o',
+#                         '--output',
+#                         help='output file when running local-dev mode',
+#                         default='local-dev.md')
+#     parser.add_argument('-t', '--token', help='Github Access Token')
+#     args = parser.parse_args()
+#     return args
 
 
 def set_local_env(env_name: str, env_value: str, prefix='INPUT'):
@@ -67,44 +67,44 @@ def get_inputs(input_name: str, prefix='INPUT') -> str:
     return os.getenv(prefix + '_{}'.format(input_name).upper())
 
 
-def set_env_from_file(file, args, prefix='INPUT'):
-    print('set_env_from_file called')
-    '''
-    Set env when use local-dev mode
-    Args:
-        file (str): path to config file
-        args (object): argument
-        prefix (str, optional): prefix of env. Defaults to 'INPUT'.
-    '''
-    f = open(file, encoding='utf-8')
-    y = yaml.safe_load(f)
-    for job in y['jobs'].values():
-        for step in job['steps']:
-            if re.match(r'BobAnkh/auto-generate-changelog', step['uses']):
-                params = step['with']
-                break
-    option_params = [
-        'REPO_NAME', 'ACCESS_TOKEN', 'PATH', 'COMMIT_MESSAGE', 'TYPE', 'COMMITTER'
-    ]
-    for param in option_params:
-        if param not in params.keys():
-            if param == 'ACCESS_TOKEN' and args.token:
-                tmp = args.token
-            else:
-                tmp = input('Please input the value of ' + param + ':')
-        elif param == 'ACCESS_TOKEN':
-            if re.match(r'\$\{\{secrets\.', params[param]):
-                if args.token:
-                    tmp = args.token
-                else:
-                    tmp = input('Please input the value of ' + param + ':')
-            else:
-                tmp = params[param]
-        elif param == 'REPO_NAME' and params[param] == '':
-            tmp = input('Please input the value of ' + param + ':')
-        else:
-            tmp = params[param]
-        set_local_env(param, tmp, prefix)
+# def set_env_from_file(file, args, prefix='INPUT'):
+#     print('set_env_from_file called')
+#     '''
+#     Set env when use local-dev mode
+#     Args:
+#         file (str): path to config file
+#         args (object): argument
+#         prefix (str, optional): prefix of env. Defaults to 'INPUT'.
+#     '''
+#     f = open(file, encoding='utf-8')
+#     y = yaml.safe_load(f)
+#     for job in y['jobs'].values():
+#         for step in job['steps']:
+#             if re.match(r'BobAnkh/auto-generate-changelog', step['uses']):
+#                 params = step['with']
+#                 break
+#     option_params = [
+#         'REPO_NAME', 'ACCESS_TOKEN', 'PATH', 'COMMIT_MESSAGE', 'TYPE', 'COMMITTER'
+#     ]
+#     for param in option_params:
+#         if param not in params.keys():
+#             if param == 'ACCESS_TOKEN' and args.token:
+#                 tmp = args.token
+#             else:
+#                 tmp = input('Please input the value of ' + param + ':')
+#         elif param == 'ACCESS_TOKEN':
+#             if re.match(r'\$\{\{secrets\.', params[param]):
+#                 if args.token:
+#                     tmp = args.token
+#                 else:
+#                     tmp = input('Please input the value of ' + param + ':')
+#             else:
+#                 tmp = params[param]
+#         elif param == 'REPO_NAME' and params[param] == '':
+#             tmp = input('Please input the value of ' + param + ':')
+#         else:
+#             tmp = params[param]
+#         set_local_env(param, tmp, prefix)
 
 
 class GithubChangelog:
@@ -364,16 +364,16 @@ def generate_changelog(releases, part_name):
 
 
 def main():
-    args = argument_parser()
-    print(args)
-    if args.mode == 'local':
-        set_env_from_file(args.file, args)
-    elif args.mode == 'github':
-        pass
-    else:
-        print("Illegal mode option, please type \'-h\' to read the help")
-        os.exit()
-    print(f"args mode: {args.mode}")
+    # args = argument_parser()
+    # print(args)
+    # if args.mode == 'local':
+    #     set_env_from_file(args.file, args)
+    # elif args.mode == 'github':
+    #     pass
+    # else:
+    #     print("Illegal mode option, please type \'-h\' to read the help")
+    #     os.exit()
+    # print(f"args mode: {args.mode}")
     ACCESS_TOKEN = get_inputs('ACCESS_TOKEN')
     print(f'Access Token: {ACCESS_TOKEN}')
     REPO_NAME = get_inputs('REPO_NAME')
