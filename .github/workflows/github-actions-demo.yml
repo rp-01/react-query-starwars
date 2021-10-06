@@ -3,8 +3,8 @@ on:
     branches: 
       - main
     types: [created, edited]
-    push:
-      - test-branch
+  push:
+    - test-branch
 
 
 jobs:
