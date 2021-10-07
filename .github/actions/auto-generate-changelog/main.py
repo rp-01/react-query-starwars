@@ -18,26 +18,26 @@ import yaml
 from tqdm import tqdm
 
 
-def argument_parser():
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        '-m',
-        '--mode',
-        help=
-        'choose to use local-dev mode or on github action mode. Valid values are \'local\' or \'github\'',
-        default='github')
-    parser.add_argument(
-        '-f',
-        '--file',
-        help='configuration file to read from when running local-dev mode',
-        default='.github/workflows/changelog.yml')
-    parser.add_argument('-o',
-                        '--output',
-                        help='output file when running local-dev mode',
-                        default='local-dev.md')
-    parser.add_argument('-t', '--token', help='Github Access Token')
-    args = parser.parse_args()
-    return args
+# def argument_parser():
+#     parser = argparse.ArgumentParser()
+#     parser.add_argument(
+#         '-m',
+#         '--mode',
+#         help=
+#         'choose to use local-dev mode or on github action mode. Valid values are \'local\' or \'github\'',
+#         default='github')
+#     parser.add_argument(
+#         '-f',
+#         '--file',
+#         help='configuration file to read from when running local-dev mode',
+#         default='.github/workflows/changelog.yml')
+#     parser.add_argument('-o',
+#                         '--output',
+#                         help='output file when running local-dev mode',
+#                         default='local-dev.md')
+#     parser.add_argument('-t', '--token', help='Github Access Token')
+#     args = parser.parse_args()
+#     return args
 
 
 def set_local_env(env_name: str, env_value: str, prefix='INPUT'):
@@ -52,6 +52,7 @@ def set_local_env(env_name: str, env_value: str, prefix='INPUT'):
 
 
 def get_inputs(input_name: str, prefix='INPUT') -> str:
+    print("get_inputs called...")
     '''
     Get a Github actions input by name
     Args:
@@ -63,46 +64,49 @@ def get_inputs(input_name: str, prefix='INPUT') -> str:
     ----------
     [1] https://help.github.com/en/actions/automating-your-workflow-with-github-actions/metadata-syntax-for-github-actions#example
     '''
+    print(os.getenv(prefix + '_{}'.format(input_name).upper()))
     return os.getenv(prefix + '_{}'.format(input_name).upper())
+    
 
 
-def set_env_from_file(file, args, prefix='INPUT'):
-    '''
-    Set env when use local-dev mode
-    Args:
-        file (str): path to config file
-        args (object): argument
-        prefix (str, optional): prefix of env. Defaults to 'INPUT'.
-    '''
-    f = open(file, encoding='utf-8')
-    y = yaml.safe_load(f)
-    for job in y['jobs'].values():
-        for step in job['steps']:
-            if re.match(r'BobAnkh/auto-generate-changelog', step['uses']):
-                params = step['with']
-                break
-    option_params = [
-        'REPO_NAME', 'ACCESS_TOKEN', 'PATH', 'COMMIT_MESSAGE', 'TYPE', 'COMMITTER'
-    ]
-    for param in option_params:
-        if param not in params.keys():
-            if param == 'ACCESS_TOKEN' and args.token:
-                tmp = args.token
-            else:
-                tmp = input('Please input the value of ' + param + ':')
-        elif param == 'ACCESS_TOKEN':
-            if re.match(r'\$\{\{secrets\.', params[param]):
-                if args.token:
-                    tmp = args.token
-                else:
-                    tmp = input('Please input the value of ' + param + ':')
-            else:
-                tmp = params[param]
-        elif param == 'REPO_NAME' and params[param] == '':
-            tmp = input('Please input the value of ' + param + ':')
-        else:
-            tmp = params[param]
-        set_local_env(param, tmp, prefix)
+# def set_env_from_file(file, args, prefix='INPUT'):
+#     print('set_env_from_file called')
+#     '''
+#     Set env when use local-dev mode
+#     Args:
+#         file (str): path to config file
+#         args (object): argument
+#         prefix (str, optional): prefix of env. Defaults to 'INPUT'.
+#     '''
+#     f = open(file, encoding='utf-8')
+#     y = yaml.safe_load(f)
+#     for job in y['jobs'].values():
+#         for step in job['steps']:
+#             if re.match(r'BobAnkh/auto-generate-changelog', step['uses']):
+#                 params = step['with']
+#                 break
+#     option_params = [
+#         'REPO_NAME', 'ACCESS_TOKEN', 'PATH', 'COMMIT_MESSAGE', 'TYPE', 'COMMITTER'
+#     ]
+#     for param in option_params:
+#         if param not in params.keys():
+#             if param == 'ACCESS_TOKEN' and args.token:
+#                 tmp = args.token
+#             else:
+#                 tmp = input('Please input the value of ' + param + ':')
+#         elif param == 'ACCESS_TOKEN':
+#             if re.match(r'\$\{\{secrets\.', params[param]):
+#                 if args.token:
+#                     tmp = args.token
+#                 else:
+#                     tmp = input('Please input the value of ' + param + ':')
+#             else:
+#                 tmp = params[param]
+#         elif param == 'REPO_NAME' and params[param] == '':
+#             tmp = input('Please input the value of ' + param + ':')
+#         else:
+#             tmp = params[param]
+#         set_local_env(param, tmp, prefix)
 
 
 class GithubChangelog:
@@ -137,23 +141,33 @@ class GithubChangelog:
         self.__author = github.GithubObject.NotSet if COMMITTER == '' else github.InputGitAuthor(COMMITTER.split(' ')[0], COMMITTER.split(' ')[1])
 
     def get_data(self):
+        print(f'self: {self.__path}')
         # get release info
         releases = self.__repo.get_releases()
+        
         self.__releases['Unreleased'] = {'html_url': '', 'body': '', 'created_at': '', 'commit_sha': ''}
         for release in releases:
             self.__releases[release.tag_name] = {'html_url': release.html_url, 'body': re.sub(r'\r\n', r'\n', release.body), 'created_at': release.created_at}
+            
         # get tags and commits
+        print(self.__releases)
         tags = self.__repo.get_tags()
         for tag in tags:
             if tag.name in self.__releases:
                 self.__releases[tag.name]['commit_sha'] = tag.commit.sha
+        print("print releases with tags")
+        print(self.__releases)
         release_commit_sha_list = {self.__releases[x]['commit_sha']:x for x in self.__releases}
+        print("print sha list:")
+        print(release_commit_sha_list)
         release_tags = list(self.__releases.keys())[::-1]
+        print(release_tags)
         seq = 0
         commits = self.__repo.get_commits(sha=self.__branch).reversed
         selected_commits = []
         pbar = tqdm(desc='Commits progress', total=commits.totalCount)
         for commit in commits:
+           
             message = commit.commit.message.split('\n\n')
             message_head = message[0]
             if message_head[-3:] == '...' and len(message) > 1:
@@ -162,6 +176,7 @@ class GithubChangelog:
             # TODO: #5 revert: remove from selected_commits
             url = commit.html_url
             pulls = commit.get_pulls()
+            print(f"pull count: {pulls.totalCount}")
             pr_links = []
             if pulls.totalCount == 0:
                 pass
@@ -362,40 +377,43 @@ def generate_changelog(releases, part_name):
 
 
 def main():
-    args = argument_parser()
-    if args.mode == 'local':
-        set_env_from_file(args.file, args)
-    elif args.mode == 'github':
-        pass
-    else:
-        print("Illegal mode option, please type \'-h\' to read the help")
-        os.exit()
+    # args = argument_parser()
+    # print(args)
+    # if args.mode == 'local':
+    #     set_env_from_file(args.file, args)
+    # elif args.mode == 'github':
+    #     pass
+    # else:
+    #     print("Illegal mode option, please type \'-h\' to read the help")
+    #     os.exit()
+    # print(f"args mode: {args.mode}")
     ACCESS_TOKEN = get_inputs('ACCESS_TOKEN')
+    print(f'Access Token: {ACCESS_TOKEN}')
     REPO_NAME = get_inputs('REPO_NAME')
+    print(f"Repo name: {REPO_NAME}")
     if REPO_NAME == '':
         REPO_NAME = get_inputs('REPOSITORY', 'GITHUB')
+    print(f'Repo Name1: {REPO_NAME}')
     PATH = get_inputs('PATH')
     BRANCH = get_inputs('BRANCH')
+    print(f'Branch name:{BRANCH}')
     if BRANCH == '':
         BRANCH = github.GithubObject.NotSet
     PULL_REQUEST = get_inputs('PULL_REQUEST')
     COMMIT_MESSAGE = get_inputs('COMMIT_MESSAGE')
     COMMITTER = get_inputs('COMMITTER')
     part_name = re.split(r'\s?,\s?', get_inputs('TYPE'))
+    print(f'part_name: {part_name}')
     changelog = GithubChangelog(ACCESS_TOKEN, REPO_NAME, PATH, BRANCH, PULL_REQUEST, COMMIT_MESSAGE, COMMITTER)
-    print(f'repo name: {REPO_NAME}')
-    print(f'path name: {PATH}')
-    print(f'commiter name: {COMMITTER}')
-    print('access token {ACCESS_TOKEN}')
-    print(f'branch {BRANCH}')
     changelog.get_data()
     CHANGELOG = generate_changelog(changelog.read_releases(), part_name)
+    changelog.write_data(CHANGELOG)
+    # if args.mode == 'local':
+    #     with open(args.output, 'w', encoding='utf-8') as f:
+    #         f.write(CHANGELOG)
+    # else:
+    #     changelog.write_data(CHANGELOG)
 
-    if args.mode == 'local':
-        with open(args.output, 'w', encoding='utf-8') as f:
-            f.write(CHANGELOG)
-    else:
-        changelog.write_data(CHANGELOG)
 
 
 if __name__ == '__main__':
