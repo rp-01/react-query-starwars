@@ -167,8 +167,9 @@ class GithubChangelog:
         selected_commits = []
         pbar = tqdm(desc='Commits progress', total=commits.totalCount)
         for commit in commits:
-            print(commit)
+           
             message = commit.commit.message.split('\n\n')
+            print(message)
             message_head = message[0]
             if message_head[-3:] == '...' and len(message) > 1:
                 if message[1][0:3] == '...':
@@ -176,6 +177,7 @@ class GithubChangelog:
             # TODO: #5 revert: remove from selected_commits
             url = commit.html_url
             pulls = commit.get_pulls()
+            print(f"pull count: {pulls}")
             pr_links = []
             if pulls.totalCount == 0:
                 pass
