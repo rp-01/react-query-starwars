@@ -8,14 +8,14 @@ on:
       - test-branch
 
 jobs:
-  generate-changelog:
+  create-release:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
     # - uses: BobAnkh/auto-generate-changelog@masters
-    - uses: rp-01/react-query-starwars/.github/actions/create-releaseg@test-branch
+    - uses: rp-01/react-query-starwars/.github/actions/create-release@test-branch
       with:
         REPO_NAME: ''
         ACCESS_TOKEN: ${{secrets.GITHUB_TOKEN}}
