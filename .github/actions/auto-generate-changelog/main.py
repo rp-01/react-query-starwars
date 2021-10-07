@@ -169,7 +169,6 @@ class GithubChangelog:
         for commit in commits:
            
             message = commit.commit.message.split('\n\n')
-            print(message)
             message_head = message[0]
             if message_head[-3:] == '...' and len(message) > 1:
                 if message[1][0:3] == '...':
@@ -177,7 +176,7 @@ class GithubChangelog:
             # TODO: #5 revert: remove from selected_commits
             url = commit.html_url
             pulls = commit.get_pulls()
-            print(f"pull count: {pulls}")
+            print(f"pull count: {pulls.totalCount}")
             pr_links = []
             if pulls.totalCount == 0:
                 pass
