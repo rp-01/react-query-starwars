@@ -64,12 +64,16 @@ class GithubChangelog:
         releases = self.__repo.get_releases()
         self.__releases['Unreleased'] = {'html_url': '', 'body': '', 'created_at': '', 'commit_sha': ''}
         commits = self.__repo.get_commits(sha=self.__branch)
-        last = commits[0]
-        print(last.commit.message)
-        print(last.commit.url)
+        last_commit = commits[0]
+        last_commit_message = last_commit.commit.message.split('\n')
+        print(last_commit_message)
+        print(last_commit.commit.url)
         tags = self.__repo.get_tags()
         tag = tags[0].name
-        print(tag)
+
+
+
+
 def main():
 
     ACCESS_TOKEN = get_inputs('ACCESS_TOKEN')
