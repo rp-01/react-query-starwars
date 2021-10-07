@@ -158,7 +158,10 @@ class GithubChangelog:
         print("print releases with tags")
         print(self.__releases)
         release_commit_sha_list = {self.__releases[x]['commit_sha']:x for x in self.__releases}
+        print("print sha list:")
+        print(release_commit_sha_list)
         release_tags = list(self.__releases.keys())[::-1]
+        print(release_tags)
         seq = 0
         commits = self.__repo.get_commits(sha=self.__branch).reversed
         selected_commits = []
