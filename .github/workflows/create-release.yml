@@ -5,7 +5,7 @@ on:
     # types: [created, edited]
   push:
     branches:
-      - test-branch
+      - main
 
 jobs:
   create-release:
@@ -15,10 +15,10 @@ jobs:
       with:
         fetch-depth: 0
     # - uses: BobAnkh/auto-generate-changelog@masters
-    - uses: rp-01/react-query-starwars/.github/actions/create-release@test-branch
+    - uses: rp-01/react-query-starwars/.github/actions/create-release@main
       with:
         REPO_NAME: ''
         ACCESS_TOKEN: ${{secrets.GITHUB_TOKEN}}
         COMMIT_MESSAGE: 'docs(CHANGELOG): update release notes'
         TYPE: 'feat:Feature,fix:Bug Fixes,docs:Documentation,refactor:Refactor,perf:Performance Improvements'
-        BRANCH: "test-branch"
+        BRANCH: "main"
