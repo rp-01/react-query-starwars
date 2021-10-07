@@ -148,8 +148,9 @@ class GithubChangelog:
         self.__releases['Unreleased'] = {'html_url': '', 'body': '', 'created_at': '', 'commit_sha': ''}
         for release in releases:
             self.__releases[release.tag_name] = {'html_url': release.html_url, 'body': re.sub(r'\r\n', r'\n', release.body), 'created_at': release.created_at}
-            print(release.body)
+            
         # get tags and commits
+        print(self.__releases)
         tags = self.__repo.get_tags()
         for tag in tags:
             if tag.name in self.__releases:
