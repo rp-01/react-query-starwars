@@ -151,12 +151,13 @@ class GithubChangelog:
             
         # get tags and commits
         print(self.__releases)
-        tags = self.__repo.get_tags()
-        print("print repos by tags")
+     
         print(tags)
         for tag in tags:
             if tag.name in self.__releases:
                 self.__releases[tag.name]['commit_sha'] = tag.commit.sha
+        print("print releases with tags")
+        print(self.__releases)
         release_commit_sha_list = {self.__releases[x]['commit_sha']:x for x in self.__releases}
         release_tags = list(self.__releases.keys())[::-1]
         seq = 0
