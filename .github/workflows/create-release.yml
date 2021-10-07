@@ -1,0 +1,24 @@
+on:
+  # release:
+  #   branches: 
+  #     - main
+    types: [created, edited]
+  push:
+    branches:
+      - test-branch
+
+jobs:
+  generate-changelog:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    # - uses: BobAnkh/auto-generate-changelog@masters
+    - uses: rp-01/react-query-starwars/.github/actions/create-releaseg@test-branch
+      with:
+        REPO_NAME: ''
+        ACCESS_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        COMMIT_MESSAGE: 'docs(CHANGELOG): update release notes'
+        TYPE: 'feat:Feature,fix:Bug Fixes,docs:Documentation,refactor:Refactor,perf:Performance Improvements'
+        BRANCH: "test-branch"
