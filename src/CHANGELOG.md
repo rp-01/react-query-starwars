@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## [1.1.4](https://github.com/rp-01/react-query-starwars/releases/tag/1.1.4) - 2021-10-05 17:36:45
+## [v1.1.5](https://github.com/rp-01/react-query-starwars/releases/tag/v1.1.5) - 2021-10-05 17:39:23
 
 *No description*
 
