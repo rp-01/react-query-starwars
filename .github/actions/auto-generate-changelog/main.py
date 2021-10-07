@@ -152,6 +152,8 @@ class GithubChangelog:
         # get tags and commits
         print(self.__releases)
         tags = self.__repo.get_tags()
+        print("print repos by tags")
+        print(tags)
         for tag in tags:
             if tag.name in self.__releases:
                 self.__releases[tag.name]['commit_sha'] = tag.commit.sha
