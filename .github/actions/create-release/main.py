@@ -69,7 +69,7 @@ class GithubChangelog:
         print(last.commit.url)
         tags = self.__repo.get_tags()
         tag = tags[0].name
-
+        print(tag)
 def main():
 
     ACCESS_TOKEN = get_inputs('ACCESS_TOKEN')
