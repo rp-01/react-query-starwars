@@ -63,9 +63,10 @@ class GithubChangelog:
 
         releases = self.__repo.get_releases()
         self.__releases['Unreleased'] = {'html_url': '', 'body': '', 'created_at': '', 'commit_sha': ''}
-        commits = self.__repo.get_commits()
+        commits = self.__repo.get_commits(sha=self.__branch)
         last = commits[0]
-        print(last)
+        print(last.commit.message)
+        print(last.commit.url)
 
 
 def main():
@@ -78,7 +79,9 @@ def main():
         REPO_NAME = get_inputs('REPOSITORY', 'GITHUB')
     print(f'Repo Name1: {REPO_NAME}')
     PATH = get_inputs('PATH')
-    BRANCH = get_inputs('BRANCH')
+    # BRANCH = get_inputs('BRANCH')
+    BRANCH="main"
+
     print(f'Branch name:{BRANCH}')
     if BRANCH == '':
         BRANCH = github.GithubObject.NotSet
