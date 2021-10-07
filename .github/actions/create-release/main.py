@@ -80,8 +80,7 @@ def main():
         REPO_NAME = get_inputs('REPOSITORY', 'GITHUB')
     print(f'Repo Name1: {REPO_NAME}')
     PATH = get_inputs('PATH')
-    # BRANCH = get_inputs('BRANCH')
-    BRANCH="main"
+    BRANCH = get_inputs('BRANCH')
 
     print(f'Branch name:{BRANCH}')
     if BRANCH == '':
