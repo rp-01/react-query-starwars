@@ -167,6 +167,7 @@ class GithubChangelog:
         selected_commits = []
         pbar = tqdm(desc='Commits progress', total=commits.totalCount)
         for commit in commits:
+            print(commit)
             message = commit.commit.message.split('\n\n')
             message_head = message[0]
             if message_head[-3:] == '...' and len(message) > 1:
