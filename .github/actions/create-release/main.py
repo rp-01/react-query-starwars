@@ -67,6 +67,9 @@ class GithubChangelog:
         last = commits[0]
         print(last.commit.message)
         print(last.commit.url)
+        tags = self.__repo.get_tags()
+        for tag in tags:
+            print(tag.name)
 
 
 def main():
