@@ -88,7 +88,7 @@ def main():
     part_name = re.split(r'\s?,\s?', get_inputs('TYPE'))
     print(f'part_name: {part_name}')
     changelog = GithubChangelog(ACCESS_TOKEN, REPO_NAME, PATH, BRANCH, PULL_REQUEST, COMMIT_MESSAGE, COMMITTER)
-    changelog.get_data()
+    changelog.get_latest_commit()
     # CHANGELOG = generate_changelog(changelog.read_releases(), part_name)
     # changelog.write_data(CHANGELOG)
 
