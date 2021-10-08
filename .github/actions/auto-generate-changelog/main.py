@@ -241,6 +241,7 @@ def strip_commits(commits, type_regex):
     '''
     # TODO: add an attribute to ignore scope 
     regex = r'^'+ type_regex + r'[(](.+?)[)]'
+    print(f'regex: {regex}\n')
     scopes = {}
     for commit in commits:
         if re.match(regex, commit['head']):
