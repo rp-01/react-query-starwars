@@ -70,9 +70,10 @@ class GithubChangelog:
         last_commit_message = last_commit.commit.message.split('\n\n')
         return last_commit_message
 
-def create_tag(tag, commit_message):
+def create_tag(tag, commit_message, semver_type):
     print(tag)
     print(commit_message)
+    print(semver_type)
 
 def main():
     ACCESS_TOKEN = get_inputs('ACCESS_TOKEN')
@@ -88,7 +89,7 @@ def main():
     COMMITTER = get_inputs('COMMITTER')
     part_name = re.split(r'\s?,\s?', get_inputs('TYPE'))
     changelog = GithubChangelog(ACCESS_TOKEN, REPO_NAME, PATH, BRANCH, PULL_REQUEST, COMMIT_MESSAGE, COMMITTER)
-    new_release_tag = create_tag(changelog.get_last_tag(),changelog.get_last_commit_message())
+    new_release_tag = create_tag(changelog.get_last_tag(),changelog.get_last_commit_message(), part_name)
     # CHANGELOG = generate_changelog(changelog.read_releases(), part_name)
     # changelog.write_data(CHANGELOG)
 
