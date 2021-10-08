@@ -4,12 +4,6 @@
 
 *No description*
 
-## [1.1.3](https://github.com/rp-01/react-query-starwars/releases/tag/1.1.3) - 2021-10-04 21:54:03
-
-testing....auto-generate-release-notes
-
-**Full Changelog**: https://github.com/rp-01/react-query-starwars/compare/v1.1.3...1.1.3
-
 ## [v1.1.3](https://github.com/rp-01/react-query-starwars/releases/tag/v1.1.3) - 2021-10-04 21:51:25
 
 *No description*
