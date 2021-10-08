@@ -65,14 +65,12 @@ class GithubChangelog:
         # self.__releases['Unreleased'] = {'html_url': '', 'body': '', 'created_at': '', 'commit_sha': ''}
         commits = self.__repo.get_commits(sha=self.__branch)
         last_commit = commits[0]
-        last_commit_message = last_commit.commit.message
+        last_commit_message = last_commit.commit.message.split('\n\n')
         print(last_commit_message)
         print(last_commit.commit.url)
         tags = self.__repo.get_tags()
         tag = tags[0].name
-
-
-
+        print(tag)
 
 def main():
 
