@@ -52,7 +52,6 @@ def set_local_env(env_name: str, env_value: str, prefix='INPUT'):
 
 
 def get_inputs(input_name: str, prefix='INPUT') -> str:
-    print("get_inputs called...")
     '''
     Get a Github actions input by name
     Args:
@@ -317,7 +316,7 @@ def generate_changelog(releases, part_name):
     for release_tag in releases:
         release_info = ''
         release_commits = releases[release_tag]['commits']
-        print(release_commits)
+        print(f'{release_commits}\n')
         if release_tag == 'Unreleased':
             title = 'Unreleased'
             description = 'Changes unreleased.'
@@ -394,6 +393,7 @@ def main():
     print(f'part_name: {part_name}')
     changelog = GithubChangelog(ACCESS_TOKEN, REPO_NAME, PATH, BRANCH, PULL_REQUEST, COMMIT_MESSAGE, COMMITTER)
     changelog.get_data()
+    print(f'Releases: {changelog.read_releases()}')
     CHANGELOG = generate_changelog(changelog.read_releases(), part_name)
     changelog.write_data(CHANGELOG)
     # if args.mode == 'local':
