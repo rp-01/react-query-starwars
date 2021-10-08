@@ -406,8 +406,9 @@ def main():
     print(f'part_name: {part_name}')
     changelog = GithubChangelog(ACCESS_TOKEN, REPO_NAME, PATH, BRANCH, PULL_REQUEST, COMMIT_MESSAGE, COMMITTER)
     changelog.get_data()
-    CHANGELOG = generate_changelog(changelog.read_releases(), part_name)
-    changelog.write_data(CHANGELOG)
+    print(changelog.read_releases())
+    # CHANGELOG = generate_changelog(changelog.read_releases(), part_name)
+    # changelog.write_data(CHANGELOG)
     # if args.mode == 'local':
     #     with open(args.output, 'w', encoding='utf-8') as f:
     #         f.write(CHANGELOG)
