@@ -70,12 +70,8 @@ class GithubChangelog:
         last_commit_message = last_commit.commit.message.split('\n\n')
         return last_commit_message
 
-def create_tag(self, tag, commit_message, semver_type):
-    self.last_tag = tag
-    self.commit_message = commit_message
-    self.semver_type = semver_type
-    new_tag = self.last_tag
-    print(new_tag)
+def create_tag(tag, commit_message, semver_type):
+    print(tag)
     print(commit_message)
     print(semver_type)
     
