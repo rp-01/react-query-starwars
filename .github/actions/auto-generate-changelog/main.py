@@ -64,7 +64,6 @@ def get_inputs(input_name: str, prefix='INPUT') -> str:
     ----------
     [1] https://help.github.com/en/actions/automating-your-workflow-with-github-actions/metadata-syntax-for-github-actions#example
     '''
-    print(os.getenv(prefix + '_{}'.format(input_name).upper()))
     return os.getenv(prefix + '_{}'.format(input_name).upper())
     
 
@@ -141,27 +140,20 @@ class GithubChangelog:
         self.__author = github.GithubObject.NotSet if COMMITTER == '' else github.InputGitAuthor(COMMITTER.split(' ')[0], COMMITTER.split(' ')[1])
 
     def get_data(self):
-        print(f'self: {self.__path}')
         # get release info
         releases = self.__repo.get_releases()
-        
         self.__releases['Unreleased'] = {'html_url': '', 'body': '', 'created_at': '', 'commit_sha': ''}
         for release in releases:
             self.__releases[release.tag_name] = {'html_url': release.html_url, 'body': re.sub(r'\r\n', r'\n', release.body), 'created_at': release.created_at}
             
         # get tags and commits
-        print(self.__releases)
         tags = self.__repo.get_tags()
         for tag in tags:
             if tag.name in self.__releases:
                 self.__releases[tag.name]['commit_sha'] = tag.commit.sha
-        print("print releases with tags")
-        print(self.__releases)
+
         release_commit_sha_list = {self.__releases[x]['commit_sha']:x for x in self.__releases}
-        print("print sha list:")
-        print(release_commit_sha_list)
         release_tags = list(self.__releases.keys())[::-1]
-        print(release_tags)
         seq = 0
         commits = self.__repo.get_commits(sha=self.__branch).reversed
         selected_commits = []
@@ -176,7 +168,6 @@ class GithubChangelog:
             # TODO: #5 revert: remove from selected_commits
             url = commit.html_url
             pulls = commit.get_pulls()
-            print(f"pull count: {pulls.totalCount}")
             pr_links = []
             if pulls.totalCount == 0:
                 pass
@@ -326,6 +317,7 @@ def generate_changelog(releases, part_name):
     for release_tag in releases:
         release_info = ''
         release_commits = releases[release_tag]['commits']
+        print(release_commits)
         if release_tag == 'Unreleased':
             title = 'Unreleased'
             description = 'Changes unreleased.'
@@ -388,15 +380,11 @@ def main():
     #     os.exit()
     # print(f"args mode: {args.mode}")
     ACCESS_TOKEN = get_inputs('ACCESS_TOKEN')
-    print(f'Access Token: {ACCESS_TOKEN}')
     REPO_NAME = get_inputs('REPO_NAME')
-    print(f"Repo name: {REPO_NAME}")
     if REPO_NAME == '':
         REPO_NAME = get_inputs('REPOSITORY', 'GITHUB')
-    print(f'Repo Name1: {REPO_NAME}')
     PATH = get_inputs('PATH')
     BRANCH = get_inputs('BRANCH')
-    print(f'Branch name:{BRANCH}')
     if BRANCH == '':
         BRANCH = github.GithubObject.NotSet
     PULL_REQUEST = get_inputs('PULL_REQUEST')
@@ -406,7 +394,6 @@ def main():
     print(f'part_name: {part_name}')
     changelog = GithubChangelog(ACCESS_TOKEN, REPO_NAME, PATH, BRANCH, PULL_REQUEST, COMMIT_MESSAGE, COMMITTER)
     changelog.get_data()
-    print(changelog.read_releases())
     # CHANGELOG = generate_changelog(changelog.read_releases(), part_name)
     # changelog.write_data(CHANGELOG)
     # if args.mode == 'local':
