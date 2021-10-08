@@ -62,7 +62,7 @@ class GithubChangelog:
         # get latest commit
 
         releases = self.__repo.get_releases()
-        self.__releases['Unreleased'] = {'html_url': '', 'body': '', 'created_at': '', 'commit_sha': ''}
+        # self.__releases['Unreleased'] = {'html_url': '', 'body': '', 'created_at': '', 'commit_sha': ''}
         commits = self.__repo.get_commits(sha=self.__branch)
         last_commit = commits[0]
         last_commit_message = last_commit.commit.message
