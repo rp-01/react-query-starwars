@@ -68,13 +68,27 @@ class GithubChangelog:
         last_commit = commits[0]
         last_commit_message = last_commit.commit.message.split('\n\n')
         # last_commit_messag = last_commit.commit.message
-        return last_commit_messag
+        return last_commit_message
 
     def read_releases(self):
         return self.__releases
 
 def create_tag(tag, commit_message, semver_type, releases):
-    print(tag)
+    
+    tag_name = tag[1:].split('.')
+    tag_name = list(map(int, tag_name))
+    for commit in commit_message:
+        regex, name = commit.split(':')
+        if(regex =='feat'): 
+            tag_name[1] = tag_name[1]+1
+        elif(regex =='fix'): 
+            tag_name[2] = tag_name[2]+1
+        elif(regex =='breaking change'):
+            tag_name[0] = tag_name[0]+1
+    
+    tag = list(map(str, tag_name))
+    new_tag = 'v' + ('.').join(tag_name)
+    print(new_tag)
     print(commit_message)
     print(semver_type)
     
