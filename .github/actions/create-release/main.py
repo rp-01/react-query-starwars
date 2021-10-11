@@ -123,9 +123,7 @@ def main():
     changelog = GithubChangelog(ACCESS_TOKEN, REPO_NAME, PATH, BRANCH, PULL_REQUEST, COMMIT_MESSAGE, COMMITTER)
     new_release_tag = create_tag(changelog.get_last_tag(),changelog.get_last_commit_message(), part_name ,changelog.read_releases())
     release_message = changelog.get_release_message()
-    changelog.create_release(new_release_tag,release_message)
-    # CHANGELOG = generate_changelog(changelog.read_releases(), part_name)
-    # changelog.write_data(CHANGELOG)
+    # changelog.create_release(new_release_tag,release_message)
 
 if __name__ == '__main__':
     main()
