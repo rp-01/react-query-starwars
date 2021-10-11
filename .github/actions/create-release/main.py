@@ -68,7 +68,7 @@ class GithubChangelog:
         last_commit = commits[0]
         last_commit_message = last_commit.commit.message.split('\n\n')
         for commit in commits:
-            print(commit)
+            print(commit.tag)
         return last_commit_message
 
     def read_releases(self):
