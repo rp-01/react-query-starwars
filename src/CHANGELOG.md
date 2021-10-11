@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## [v1.4.12](https://github.com/rp-01/react-query-starwars/releases/tag/v1.4.12) - 2021-10-11 18:00:46
+
+fix:
+-add commit message to release description
+
+feat:
+-add tag as release title
+-add commit message as descritpion
+
 ## [v1.3.11](https://github.com/rp-01/react-query-starwars/releases/tag/v1.3.11) - 2021-10-11 16:45:42
 
 fixed some stuff
