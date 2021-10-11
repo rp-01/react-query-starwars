@@ -1,8 +1,5 @@
+name: Create New Release
 on:
-  # release:
-  #   branches: 
-  #     - main
-    # types: [created, edited]
   push:
     branches:
       - main

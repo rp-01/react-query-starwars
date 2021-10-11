@@ -1,11 +1,10 @@
+name: Generate Changelog
 on:
-  # release:
-  #   branches: 
-  #     - main
-  #   types: [created, edited]
-  push:
-    branches:
+  release:
+    branches: 
       - main
+    types: [created, edited]
+
 
 
 jobs:
