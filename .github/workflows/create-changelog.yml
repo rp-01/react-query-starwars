@@ -4,7 +4,8 @@ on:
   #   branches: 
   #     - main
   #   types: [created, edited, published]
-  workflows: ["Create New Release"]
+  workflow_run:
+    workflows: ["Create New Release"]
     types:
       - completed
 
