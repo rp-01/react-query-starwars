@@ -72,6 +72,10 @@ class GithubChangelog:
 
     def read_releases(self):
         return self.__releases
+        
+    def create_release(self,tag):
+        self.__repo. create_git_release(tag, "new release", "fixed some stuff", draft=False, prerelease=False)
+
 
 def create_tag(tag, commit_message, semver_type, releases):
     
@@ -92,6 +96,7 @@ def create_tag(tag, commit_message, semver_type, releases):
     print(commit_message)
     print(semver_type)
     
+    return new_tag
 
 def main():
     ACCESS_TOKEN = get_inputs('ACCESS_TOKEN')
@@ -109,6 +114,7 @@ def main():
     part_name = part_name.split(',')
     changelog = GithubChangelog(ACCESS_TOKEN, REPO_NAME, PATH, BRANCH, PULL_REQUEST, COMMIT_MESSAGE, COMMITTER)
     new_release_tag = create_tag(changelog.get_last_tag(),changelog.get_last_commit_message(), part_name ,changelog.read_releases())
+    changelog.create_release(new_release_tag)
     # CHANGELOG = generate_changelog(changelog.read_releases(), part_name)
     # changelog.write_data(CHANGELOG)
 
