@@ -86,7 +86,7 @@ def create_tag(tag, commit_message, semver_type, releases):
         elif(regex =='breaking change'):
             tag_name[0] = tag_name[0]+1
     
-    tag = list(map(str, tag_name))
+    tag_name = list(map(str, tag_name))
     new_tag = 'v' + ('.').join(tag_name)
     print(new_tag)
     print(commit_message)
