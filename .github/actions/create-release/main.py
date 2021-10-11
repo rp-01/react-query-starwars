@@ -75,8 +75,8 @@ class GithubChangelog:
     def read_releases(self):
         return self.__releases
         
-    def create_release(self,tag,release_message):
-        self.__repo. create_git_release(tag, tag, release_message, draft=False, prerelease=False)
+    def create_release(self,tag,message):
+        self.__repo. create_git_release(tag, tag, message, draft=False, prerelease=False)
 
     def get_release_message(self):
         commits = self.__repo.get_commits(sha=self.__branch)
