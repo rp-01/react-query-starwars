@@ -67,8 +67,6 @@ class GithubChangelog:
         commits = self.__repo.get_commits(sha=self.__branch)
         last_commit = commits[0]
         last_commit_message = last_commit.commit.message.split('\n\n')
-        for commit in commits:
-            print(commit.tag)
         return last_commit_message
 
     def read_releases(self):
@@ -92,7 +90,8 @@ def main():
     PULL_REQUEST = get_inputs('PULL_REQUEST')
     COMMIT_MESSAGE = get_inputs('COMMIT_MESSAGE')
     COMMITTER = get_inputs('COMMITTER')
-    part_name = re.split(r'\s?,\s?', get_inputs('TYPE'))
+    part_name = get_inputs('TYPE')
+    part_name = part_name.split(',')
     changelog = GithubChangelog(ACCESS_TOKEN, REPO_NAME, PATH, BRANCH, PULL_REQUEST, COMMIT_MESSAGE, COMMITTER)
     new_release_tag = create_tag(changelog.get_last_tag(),changelog.get_last_commit_message(), part_name ,changelog.read_releases())
     # CHANGELOG = generate_changelog(changelog.read_releases(), part_name)
