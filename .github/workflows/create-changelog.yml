@@ -1,10 +1,12 @@
 name: Generate Changelog
 on:
-  release:
-    branches: 
-      - main
-    types: [created, edited, published]
-
+  # release:
+  #   branches: 
+  #     - main
+  #   types: [created, edited, published]
+  workflows: ["Create New Release"]
+    types:
+      - completed
 
 
 jobs:
