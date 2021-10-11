@@ -12,7 +12,6 @@ from tqdm import tqdm
 
 
 def get_inputs(input_name: str, prefix='INPUT') -> str:
-    print("get_inputs called...")
     '''
     Get a Github actions input by name
     Args:
@@ -63,14 +62,19 @@ class GithubChangelog:
 
     def get_last_commit_message(self):
         # get latest commit
-        # releases = self.__repo.get_releases()
-        # self.__releases['Unreleased'] = {'html_url': '', 'body': '', 'created_at': '', 'commit_sha': ''}
+        releases = self.__repo.get_releases()
+        self.__releases['Unreleased'] = {'html_url': '', 'body': '', 'created_at': '', 'commit_sha': ''}
         commits = self.__repo.get_commits(sha=self.__branch)
         last_commit = commits[0]
         last_commit_message = last_commit.commit.message.split('\n\n')
+        for commit in commits:
+            print(commit)
         return last_commit_message
 
-def create_tag(tag, commit_message, semver_type):
+    def read_releases(self):
+        return self.__releases
+
+def create_tag(tag, commit_message, semver_type, releases):
     print(tag)
     print(commit_message)
     print(semver_type)
@@ -90,7 +94,7 @@ def main():
     COMMITTER = get_inputs('COMMITTER')
     part_name = re.split(r'\s?,\s?', get_inputs('TYPE'))
     changelog = GithubChangelog(ACCESS_TOKEN, REPO_NAME, PATH, BRANCH, PULL_REQUEST, COMMIT_MESSAGE, COMMITTER)
-    new_release_tag = create_tag(changelog.get_last_tag(),changelog.get_last_commit_message(), part_name)
+    new_release_tag = create_tag(changelog.get_last_tag(),changelog.get_last_commit_message(), part_name ,changelog.read_releases())
     # CHANGELOG = generate_changelog(changelog.read_releases(), part_name)
     # changelog.write_data(CHANGELOG)
 
