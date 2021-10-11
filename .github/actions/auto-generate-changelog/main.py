@@ -325,6 +325,7 @@ def generate_changelog(releases, part_name):
             url = releases[release_tag]['html_url']
             origin_desc = re.split(r'<!-- HIDE IN CHANGELOG BEGIN -->(?:.|\n)*?<!-- HIDE IN CHANGELOG END -->', releases[release_tag]['body'])
             print(f'origin decs: {origin_desc}\n')
+            print(len(origin_desc))
             print(f"release body: {releases[release_tag]['body']}\n")
             if len(origin_desc) == 1:
                 description = origin_desc[0]
