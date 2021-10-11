@@ -63,9 +63,11 @@ class GithubChangelog:
     def get_last_commit_message(self):
         # get latest commit
         releases = self.__repo.get_releases()
+
         self.__releases['Unreleased'] = {'html_url': '', 'body': '', 'created_at': '', 'commit_sha': ''}
         commits = self.__repo.get_commits(sha=self.__branch)
         last_commit = commits[0]
+        release_message = last_commit.commit.message
         last_commit_message = last_commit.commit.message.split('\n\n')
         # last_commit_messag = last_commit.commit.message
         return last_commit_message
@@ -73,9 +75,15 @@ class GithubChangelog:
     def read_releases(self):
         return self.__releases
         
-    def create_release(self,tag):
-        self.__repo. create_git_release(tag, "new release", "fixed some stuff", draft=False, prerelease=False)
+    def create_release(self,tag,release_message):
+        self.__repo. create_git_release(tag, tag, release_message, draft=False, prerelease=False)
 
+    def get_release_message(self):
+        commits = self.__repo.get_commits(sha=self.__branch)
+        last_commit = commits[0]
+        release_message = last_commit.commit.message
+        return release_message
+        
 
 def create_tag(tag, commit_message, semver_type, releases):
     
@@ -114,7 +122,8 @@ def main():
     part_name = part_name.split(',')
     changelog = GithubChangelog(ACCESS_TOKEN, REPO_NAME, PATH, BRANCH, PULL_REQUEST, COMMIT_MESSAGE, COMMITTER)
     new_release_tag = create_tag(changelog.get_last_tag(),changelog.get_last_commit_message(), part_name ,changelog.read_releases())
-    changelog.create_release(new_release_tag)
+    release_message = changelog.get_release_message()
+    changelog.create_release(new_release_tag,release_message)
     # CHANGELOG = generate_changelog(changelog.read_releases(), part_name)
     # changelog.write_data(CHANGELOG)
 
