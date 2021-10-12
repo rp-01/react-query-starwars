@@ -55,8 +55,8 @@ generate changeLog through github actions
 
 ## [v1.0](https://github.com/rp-01/react-query-starwars/releases/tag/v1.0) - 2021-09-30 13:23:38
 
-#Features
+# Features
 
-##- Testing github actions
+## - Testing github actions
 
 
