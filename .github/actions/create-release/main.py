@@ -9,6 +9,7 @@ import sys
 import github
 import yaml
 from tqdm import tqdm
+from datetime import datetime
 #some
 
 def get_inputs(input_name: str, prefix='INPUT') -> str:
@@ -83,26 +84,22 @@ class GithubChangelog:
         self.__repo.create_git_release(tag, tag, message, draft=False, prerelease=False)
 
     def get_release_message(self):
-        commits = self.__repo.get_commits(sha=self.__branch)
-        last_commit = commits[0]
-        release_message = last_commit.commit.message
-        return release_message
-
-    def get_pull_request(self):
+        release_message =''
         releases = self.__repo.get_releases()
-        last_rel_tag = releases[0].tag_name
-        last_rel_date = releases[0].created_at
-        print(f'rel tag: {last_rel_tag}')
-        print(f'rel create date: {last_rel_date}')
+        last_release_date = datetime.fromisoformat(releases[0].created_at)
+
         commits = self.__repo.get_commits(sha=self.__branch)
         for commit in commits:
-            print(commit.commit.message)
-        pulls = self.__repo.get_pulls()
-        for pull in pulls:
-            print(f'pull rq: {pull.title}')
-            print(pull.created_at)
-            print(pull.state)
-            
+            pulls = commit.get_pulls()
+            for pull in pulls:
+                pull_release_date = datetime.fromisoformat(pull.created_at)
+                if(pull_release_date > last_release_date):
+                    release_message = f'''- {pull.title}\n'''
+        print(f'release message: {release_message}')
+        return release_message
+
+
+        
             
 def create_tag(tag, commit_message, semver_type, releases):
     
@@ -155,7 +152,6 @@ def main():
         
         else:
             release_message = changelog.get_release_message()
-            changelog.get_pull_request()
             # changelog.create_release(new_release_tag,release_message)
     else:
         print("invalid commit message format")
