@@ -112,27 +112,24 @@ def create_tag(tag, commit_message, semver_type, releases):
             print(semver_type)
         except Exception as e:
             print(e)
-    # if sementic versioning tag doesn't exist, stop the workflow
+    # if sementic versioning tag doesn't exist, return last tag
     else:
-        print("new release is not required")
         new_tag = tag
     
     return new_tag
 
 def main():
     ACCESS_TOKEN = get_inputs('ACCESS_TOKEN')
+    
     REPO_NAME = get_inputs('REPO_NAME')
     if REPO_NAME == '':
         REPO_NAME = get_inputs('REPOSITORY', 'GITHUB')
     PATH = get_inputs('PATH')
+
     BRANCH = get_inputs('BRANCH')
-
-
-
-
-
     if BRANCH == '':
         BRANCH = github.GithubObject.NotSet
+    
     PULL_REQUEST = get_inputs('PULL_REQUEST')
     COMMIT_MESSAGE = get_inputs('COMMIT_MESSAGE')
     COMMITTER = get_inputs('COMMITTER')
