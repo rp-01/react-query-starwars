@@ -76,7 +76,7 @@ class GithubChangelog:
         return self.__releases
         
     def create_release(self,tag,message):
-        self.__repo. create_git_release(tag, tag, message, draft=False, prerelease=False)
+        self.__repo.create_git_release(tag, tag, message, draft=False, prerelease=False)
 
     def get_release_message(self):
         commits = self.__repo.get_commits(sha=self.__branch)
@@ -145,7 +145,7 @@ def main():
     else:
         release_message = changelog.get_release_message()
         changelog.get_pull_request()
-        changelog.create_release(new_release_tag,release_message)
+        # changelog.create_release(new_release_tag,release_message)
 
 if __name__ == '__main__':
     main()
