@@ -83,6 +83,10 @@ class GithubChangelog:
         last_commit = commits[0]
         release_message = last_commit.commit.message
         return release_message
+    def get_pull_request(self):
+        commits = self.__repo.get_commits(sha=self.__branch)
+        for commit in commits:
+            pulls = commit.get_pulls()
         
 
 def create_tag(tag, commit_message, semver_type, releases):
@@ -121,8 +125,13 @@ def main():
     part_name = get_inputs('TYPE')
     part_name = part_name.split(',')
     changelog = GithubChangelog(ACCESS_TOKEN, REPO_NAME, PATH, BRANCH, PULL_REQUEST, COMMIT_MESSAGE, COMMITTER)
-    new_release_tag = create_tag(changelog.get_last_tag(),changelog.get_last_commit_message(), part_name ,changelog.read_releases())
+    latest_tag = changelog.get_last_tag()
+    new_release_tag = create_tag(latest_tag,changelog.get_last_commit_message(), part_name ,changelog.read_releases())
+    if new_release_tag == latest_tag:
+        print("new release is not requried. Exiting workflow....")
+        os.exit
     release_message = changelog.get_release_message()
+    changelog.get_pull_request()
     # changelog.create_release(new_release_tag,release_message)
 
 if __name__ == '__main__':

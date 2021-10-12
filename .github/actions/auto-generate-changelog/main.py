@@ -158,7 +158,6 @@ class GithubChangelog:
         selected_commits = []
         pbar = tqdm(desc='Commits progress', total=commits.totalCount)
         for commit in commits:
-           
             message = commit.commit.message.split('\n\n')
             message_head = message[0]
             if message_head[-3:] == '...' and len(message) > 1:
@@ -168,6 +167,7 @@ class GithubChangelog:
             url = commit.html_url
             pulls = commit.get_pulls()
             pr_links = []
+
             if pulls.totalCount == 0:
                 pass
             else:
@@ -324,7 +324,7 @@ def generate_changelog(releases, part_name):
             title = release_tag
             url = releases[release_tag]['html_url']
             origin_desc = re.split(r'<!-- HIDE IN CHANGELOG BEGIN -->(?:.|\n)*?<!-- HIDE IN CHANGELOG END -->', releases[release_tag]['body'])
-            print(f'origin decs: {origin_desc}\n')
+            print(f'origin desc: {origin_desc}\n')
             print(len(origin_desc))
             print(f"release body: {releases[release_tag]['body']}\n")
             if len(origin_desc) == 1:
