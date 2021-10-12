@@ -94,7 +94,7 @@ class GithubChangelog:
                 print(type(pull.state))
                 print(pull.title)
                 if(pull.created_at > last_release_date) and pull.state == 'closed':
-                    release_message = + release_message + '\n' + f'- {pull.title}' 
+                    release_message = release_message + '\n' + f'- {pull.title}' 
         print(f'release message: {release_message}')
         return release_message
         #new comment
