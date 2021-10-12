@@ -91,22 +91,31 @@ class GithubChangelog:
 
 def create_tag(tag, commit_message, semver_type, releases):
     
-    tag_name = tag[1:].split('.')
-    tag_name = list(map(int, tag_name))
-    for commit in commit_message:
-        regex, name = commit.split(':')
-        if(regex =='feat'): 
-            tag_name[1] = tag_name[1]+1
-        elif(regex =='fix'): 
-            tag_name[2] = tag_name[2]+1
-        elif(regex =='breaking change'):
-            tag_name[0] = tag_name[0]+1
+    # check if any sementic version tag exist in commmit message
+    if any(semver in commit_message for semver in semver_type):
+        try:
+            tag_name = tag[1:].split('.')
+            tag_name = list(map(int, tag_name))
+            for commit in commit_message:
+                regex, name = commit.split(':')
+                if(regex =='feat'): 
+                    tag_name[1] = tag_name[1]+1
+                elif(regex =='fix'): 
+                    tag_name[2] = tag_name[2]+1
+                elif(regex =='breaking change'):
+                    tag_name[0] = tag_name[0]+1
     
-    tag_name = list(map(str, tag_name))
-    new_tag = 'v' + ('.').join(tag_name)
-    print(new_tag)
-    print(commit_message)
-    print(semver_type)
+            tag_name = list(map(str, tag_name))
+            new_tag = 'v' + ('.').join(tag_name)
+            print(new_tag)
+            print(commit_message)
+            print(semver_type)
+        except Exception as e:
+            print(e)
+    # if sementic versioning tag doesn't exist, stop the workflow
+    else:
+        print("new release is not required")
+        os.exit()
     
     return new_tag
 
@@ -129,7 +138,6 @@ def main():
     new_release_tag = create_tag(latest_tag,changelog.get_last_commit_message(), part_name ,changelog.read_releases())
     if new_release_tag == latest_tag:
         print("new release is not requried. Exiting workflow....")
-        os.exit
     release_message = changelog.get_release_message()
     changelog.get_pull_request()
     # changelog.create_release(new_release_tag,release_message)
