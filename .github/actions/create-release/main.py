@@ -93,9 +93,9 @@ class GithubChangelog:
         for commit in commits:
             pulls = commit.get_pulls()
             for pull in pulls:
-                print(f'pull rq state {pull.state}')
-                if(pull.created_at > last_release_date):
-                    release_message = f'''- {pull.title}\n'''
+                print(type(pull.state))
+                if(pull.created_at > last_release_date) and pull.state == 'closed':
+                    release_message = f'- {pull.title}'+ '\n' + release_message
         print(f'release message: {release_message}')
         return release_message
 
