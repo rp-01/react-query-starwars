@@ -17,7 +17,7 @@ jobs:
         REPO_NAME: ''
         ACCESS_TOKEN: ${{secrets.GITHUB_TOKEN}}
         COMMIT_MESSAGE: 'docs(CHANGELOG): update release notes'
-        TYPE: 'feat:Feature,fix:Bug Fixes,breaking change:footer,docs:Documentation,refactor:Refactor,perf:Performance Improvements'
+        TYPE: 'feat,fix,breaking change,docs,refactor,perf'
         BRANCH: "main"
 # test pull requestsgit 
 # in branch ss-4
