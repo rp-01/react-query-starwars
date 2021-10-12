@@ -68,9 +68,11 @@ class GithubChangelog:
         commits = self.__repo.get_commits(sha=self.__branch)
         last_commit = commits[0]
         release_message = last_commit.commit.message
+        print(release_message)
         last_commit_message = ''
         if any(semver in release_message for semver in semver_type):
-            last_commit_message = last_commit.commit.message.split('\n\n')
+            last_commit_message = release_message.split('\n\n')
+            print(f'{last_commit_message}')
         # last_commit_messag = last_commit.commit.message
         return last_commit_message
 
