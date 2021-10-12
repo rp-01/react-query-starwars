@@ -85,17 +85,16 @@ class GithubChangelog:
 
     def get_release_message(self):
         release_message =''
-        releases = self.__repo.get_releases()
-        release_date = releases[0].created_at
-        print(type(release_date))
-        last_release_date = datetime.fromisoformat(releases[0].created_at)
+        releases = self.__repo.get_releases()        
+        last_release_date = releases[0].created_at
 
         commits = self.__repo.get_commits(sha=self.__branch)
+        
         for commit in commits:
             pulls = commit.get_pulls()
             for pull in pulls:
-                pull_release_date = datetime.fromisoformat(pull.created_at)
-                if(pull_release_date > last_release_date):
+                print(f'pull rq state {pull.state}')
+                if(pull.created_at > last_release_date):
                     release_message = f'''- {pull.title}\n'''
         print(f'release message: {release_message}')
         return release_message
