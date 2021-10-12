@@ -138,13 +138,15 @@ def main():
     last_commit_message = changelog.get_last_commit_message(part_name)
     if(last_commit_message != ''):
         new_release_tag = create_tag(last_tag, last_commit_message, part_name ,changelog.read_releases())
-    if new_release_tag == last_tag:
-        print("new release is not requried. Exiting workflow....")
+        if new_release_tag == last_tag:
+            print("new release is not requried. Exiting workflow....")
         
+        else:
+            release_message = changelog.get_release_message()
+            changelog.get_pull_request()
+            # changelog.create_release(new_release_tag,release_message)
     else:
-        release_message = changelog.get_release_message()
-        changelog.get_pull_request()
-        # changelog.create_release(new_release_tag,release_message)
+        print("invalid commit message format")
 
 if __name__ == '__main__':
     main()
