@@ -20,6 +20,6 @@ jobs:
         TYPE: 'feat,fix,breaking change,docs,refactor,perf'
         BRANCH: "main"
 # test pull requestsgit 
-# in branch ss-4
+# in branch ss-11
 # in branch ss-3
 # in main branch
