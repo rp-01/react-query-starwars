@@ -93,7 +93,7 @@ class GithubChangelog:
             pulls = commit.get_pulls()
             for pull in pulls:
                 print(f'pull rq: {pull}')
-                print(pull.head.repo.tags.url)
+                print(pull.head.repo.tags_url)
 
 def create_tag(tag, commit_message, semver_type, releases):
     
