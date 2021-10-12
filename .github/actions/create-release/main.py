@@ -85,11 +85,11 @@ class GithubChangelog:
         release_message =''
         releases = self.__repo.get_releases()        
         last_release_date = releases[0].created_at
-
+        
         commits = self.__repo.get_commits(sha=self.__branch)
         
         for commit in commits:
-            pulls = commit.get_pulls()
+            pulls = commit.get_pulls().reversed
             for pull in pulls:
                 print(type(pull.state))
                 if(pull.created_at > last_release_date) and pull.state == 'closed':
