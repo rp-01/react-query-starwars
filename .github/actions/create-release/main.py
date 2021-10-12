@@ -86,6 +86,8 @@ class GithubChangelog:
     def get_release_message(self):
         release_message =''
         releases = self.__repo.get_releases()
+        release_date = releases[0].created_at
+        print(type(release_date))
         last_release_date = datetime.fromisoformat(releases[0].created_at)
 
         commits = self.__repo.get_commits(sha=self.__branch)
