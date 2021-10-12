@@ -96,12 +96,13 @@ class GithubChangelog:
         print(f'rel create date: {last_rel_date}')
         commits = self.__repo.get_commits(sha=self.__branch)
         for commit in commits:
-            pulls = commit.get_pulls()
-            print(f'commit message: {commit.commit.message}')
-            for pull in pulls:
-                print(f'pull rq: {pull.title}')
-                print(pull.created_at)
-                print(pull.state)
+            print(commit.commit.message)
+        pulls = self.__repo.get_pulls()
+        for pull in pulls:
+            print(f'pull rq: {pull.title}')
+            print(pull.created_at)
+            print(pull.state)
+            
             
 def create_tag(tag, commit_message, semver_type, releases):
     
