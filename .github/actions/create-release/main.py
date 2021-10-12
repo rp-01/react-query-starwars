@@ -87,18 +87,21 @@ class GithubChangelog:
         last_commit = commits[0]
         release_message = last_commit.commit.message
         return release_message
+
     def get_pull_request(self):
+        releases = self.__repo.get_releases()
+        last_rel_tag = releases[0].tag_name
+        last_rel_date = releases[0].created_at
+        print(f'rel tag: {last_rel_tag}')
+        print(f'rel create date: {last_rel_date}')
         commits = self.__repo.get_commits(sha=self.__branch)
         for commit in commits:
             pulls = commit.get_pulls()
-            release = commit.get_tags()
-            for rel in release:
-                print(f'rel tag: {rel.tag_name}')
+            print(f'commit message: {commit.commit.message}')
             for pull in pulls:
                 print(f'pull rq: {pull.title}')
-                print(pull.head.repo.created_at)
+                print(pull.created_at)
                 print(pull.state)
-                print(f'milestone: {pull.milestone.title}')
             
 def create_tag(tag, commit_message, semver_type, releases):
     
