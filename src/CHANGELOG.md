@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## [v1.4.13](https://github.com/rp-01/react-query-starwars/releases/tag/v1.4.13) - 2021-10-12 19:53:32
+
+- [SS-1] pull request 1
+- [ss-4] Pull request 2
+- [ss-3] test another PR
+- [ss-3] print pull reuqests
+
+
 ## [v1.4.12](https://github.com/rp-01/react-query-starwars/releases/tag/v1.4.12) - 2021-10-11 18:00:46
 
 fix:
