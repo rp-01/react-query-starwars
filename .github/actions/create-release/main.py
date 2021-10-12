@@ -91,7 +91,7 @@ class GithubChangelog:
         commits = self.__repo.get_commits(sha=self.__branch)
         for commit in commits:
             pulls = commit.get_pulls()
-            release = commit.get_releases()
+            release = commit.get_tags()
             for rel in release:
                 print(f'rel tag: {rel.tag_name}')
             for pull in pulls:
