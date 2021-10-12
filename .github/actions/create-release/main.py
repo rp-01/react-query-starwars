@@ -5,14 +5,13 @@ import argparse
 import base64
 import os
 import re
-
+import sys
 import github
 import yaml
 from tqdm import tqdm
-
+#some
 
 def get_inputs(input_name: str, prefix='INPUT') -> str:
-    print("get_inputs called...")
     '''
     Get a Github actions input by name
     Args:
@@ -24,7 +23,6 @@ def get_inputs(input_name: str, prefix='INPUT') -> str:
     ----------
     [1] https://help.github.com/en/actions/automating-your-workflow-with-github-actions/metadata-syntax-for-github-actions#example
     '''
-    print(os.getenv(prefix + '_{}'.format(input_name).upper()))
     return os.getenv(prefix + '_{}'.format(input_name).upper())
     
 class GithubChangelog:
@@ -58,42 +56,95 @@ class GithubChangelog:
         self.__repo = g.get_repo(REPO_NAME)
         self.__author = github.GithubObject.NotSet if COMMITTER == '' else github.InputGitAuthor(COMMITTER.split(' ')[0], COMMITTER.split(' ')[1])
 
-    def get_latest_commit(self):
-        # get latest commit
+    def get_last_tag(self):
+        tags = self.__repo.get_tags()
+        return tags[0].name
 
+    def get_last_commit_message(self):
+        # get latest commit
         releases = self.__repo.get_releases()
+
         self.__releases['Unreleased'] = {'html_url': '', 'body': '', 'created_at': '', 'commit_sha': ''}
         commits = self.__repo.get_commits(sha=self.__branch)
-        last = commits[0]
-        print(last.commit.message)
-        print(last.commit.url)
-        tags = self.__repo.get_tags()
-        tag = tags[0].name
+        last_commit = commits[0]
+        release_message = last_commit.commit.message
+        last_commit_message = last_commit.commit.message.split('\n\n')
+        # last_commit_messag = last_commit.commit.message
+        return last_commit_message
+
+    def read_releases(self):
+        return self.__releases
+        
+    def create_release(self,tag,message):
+        self.__repo. create_git_release(tag, tag, message, draft=False, prerelease=False)
+
+    def get_release_message(self):
+        commits = self.__repo.get_commits(sha=self.__branch)
+        last_commit = commits[0]
+        release_message = last_commit.commit.message
+        return release_message
+    def get_pull_request(self):
+        commits = self.__repo.get_commits(sha=self.__branch)
+        for commit in commits:
+            pulls = commit.get_pulls()
+        
+
+def create_tag(tag, commit_message, semver_type, releases):
+    
+    # check if any sementic version tag exist in commmit message
+    if any(semver in commit_message for semver in semver_type):
+        try:
+            tag_name = tag[1:].split('.')
+            tag_name = list(map(int, tag_name))
+            for commit in commit_message:
+                regex, name = commit.split(':')
+                if(regex =='feat'): 
+                    tag_name[1] = tag_name[1]+1
+                elif(regex =='fix'): 
+                    tag_name[2] = tag_name[2]+1
+                elif(regex =='breaking change'):
+                    tag_name[0] = tag_name[0]+1
+    
+            tag_name = list(map(str, tag_name))
+            new_tag = 'v' + ('.').join(tag_name)
+            print(new_tag)
+            print(commit_message)
+            print(semver_type)
+        except Exception as e:
+            print(e)
+    # if sementic versioning tag doesn't exist, return last tag
+    else:
+        new_tag = tag
+    
+    return new_tag
 
 def main():
-
     ACCESS_TOKEN = get_inputs('ACCESS_TOKEN')
-    print(f'Access Token: {ACCESS_TOKEN}')
+    
     REPO_NAME = get_inputs('REPO_NAME')
-    print(f"Repo name: {REPO_NAME}")
     if REPO_NAME == '':
         REPO_NAME = get_inputs('REPOSITORY', 'GITHUB')
-    print(f'Repo Name1: {REPO_NAME}')
     PATH = get_inputs('PATH')
-    BRANCH = get_inputs('BRANCH')
 
-    print(f'Branch name:{BRANCH}')
+    BRANCH = get_inputs('BRANCH')
     if BRANCH == '':
         BRANCH = github.GithubObject.NotSet
+    
     PULL_REQUEST = get_inputs('PULL_REQUEST')
     COMMIT_MESSAGE = get_inputs('COMMIT_MESSAGE')
     COMMITTER = get_inputs('COMMITTER')
-    part_name = re.split(r'\s?,\s?', get_inputs('TYPE'))
-    print(f'part_name: {part_name}')
+    part_name = get_inputs('TYPE')
+    part_name = part_name.split(',')
     changelog = GithubChangelog(ACCESS_TOKEN, REPO_NAME, PATH, BRANCH, PULL_REQUEST, COMMIT_MESSAGE, COMMITTER)
-    changelog.get_latest_commit()
-    # CHANGELOG = generate_changelog(changelog.read_releases(), part_name)
-    # changelog.write_data(CHANGELOG)
+    last_tag = changelog.get_last_tag()
+    new_release_tag = create_tag(last_tag,changelog.get_last_commit_message(), part_name ,changelog.read_releases())
+    if new_release_tag == last_tag:
+        print("new release is not requried. Exiting workflow....")
+        
+    else:
+        release_message = changelog.get_release_message()
+        changelog.get_pull_request()
+        changelog.create_release(new_release_tag,release_message)
 
 if __name__ == '__main__':
     main()
