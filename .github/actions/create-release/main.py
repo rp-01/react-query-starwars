@@ -63,24 +63,22 @@ class GithubChangelog:
 
     def get_last_commit_message(self, semver_type):
         # get latest commit
-        releases = self.__repo.get_releases()
-
-        self.__releases['Unreleased'] = {'html_url': '', 'body': '', 'created_at': '', 'commit_sha': ''}
         commits = self.__repo.get_commits(sha=self.__branch)
         last_commit = commits[0]
         release_message = last_commit.commit.message
         print(release_message)
-        last_commit_message = ''
+        last_commit_message = []
         if any(semver in release_message for semver in semver_type):
             last_commit_message = release_message.split('\n\n')
             print(f'{last_commit_message}')
+            print
         # last_commit_messag = last_commit.commit.message
         return last_commit_message
 
     def read_releases(self):
         return self.__releases
         
-    def create_release(self,tag,message):
+    def create_release(self, tag, message):
         self.__repo.create_git_release(tag, tag, message, draft=False, prerelease=False)
 
     def get_release_message(self):
@@ -146,14 +144,14 @@ def main():
     changelog = GithubChangelog(ACCESS_TOKEN, REPO_NAME, PATH, BRANCH, PULL_REQUEST, COMMIT_MESSAGE, COMMITTER)
     last_tag = changelog.get_last_tag()
     last_commit_message = changelog.get_last_commit_message(part_name)
-    if(last_commit_message != ''):
+    if last_commit_message:
         new_release_tag = create_tag(last_tag, last_commit_message, part_name)
         if new_release_tag == last_tag:
             print("new release is not requried. Exiting workflow....")
         
         else:
             release_message = changelog.get_release_message()
-            # changelog.create_release(new_release_tag,release_message)
+            changelog.create_release(new_release_tag,release_message)
     else:
         print("invalid commit message format")
 
