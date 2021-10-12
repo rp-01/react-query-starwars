@@ -89,11 +89,12 @@ class GithubChangelog:
         commits = self.__repo.get_commits(sha=self.__branch)
         
         for commit in commits:
-            pulls = commit.get_pulls().reversed
+            pulls = commit.get_pulls()
             for pull in pulls:
                 print(type(pull.state))
+                print(pull.title)
                 if(pull.created_at > last_release_date) and pull.state == 'closed':
-                    release_message = f'- {pull.title}'+ '\n' + release_message
+                    release_message = + release_message + '\n' + f'- {pull.title}' 
         print(f'release message: {release_message}')
         return release_message
         #new comment
