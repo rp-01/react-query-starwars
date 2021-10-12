@@ -91,10 +91,15 @@ class GithubChangelog:
         commits = self.__repo.get_commits(sha=self.__branch)
         for commit in commits:
             pulls = commit.get_pulls()
+            release = commit.get_releases()
+            for rel in release:
+                print(f'rel tag: {rel.tag_name}')
             for pull in pulls:
-                print(f'pull rq: {pull}')
-                print(pull.head.repo.tags_url)
-
+                print(f'pull rq: {pull.title}')
+                print(pull.head.repo.created_at)
+                print(pull.state)
+                print(f'milestone: {pull.milestone.title}')
+            
 def create_tag(tag, commit_message, semver_type, releases):
     
     try:
