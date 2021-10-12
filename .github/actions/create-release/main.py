@@ -5,7 +5,7 @@ import argparse
 import base64
 import os
 import re
-
+import sys
 import github
 import yaml
 from tqdm import tqdm
@@ -115,7 +115,7 @@ def create_tag(tag, commit_message, semver_type, releases):
     # if sementic versioning tag doesn't exist, stop the workflow
     else:
         print("new release is not required")
-        os.exit()
+        new_tag = tag
     
     return new_tag
 
@@ -126,6 +126,11 @@ def main():
         REPO_NAME = get_inputs('REPOSITORY', 'GITHUB')
     PATH = get_inputs('PATH')
     BRANCH = get_inputs('BRANCH')
+
+
+
+
+
     if BRANCH == '':
         BRANCH = github.GithubObject.NotSet
     PULL_REQUEST = get_inputs('PULL_REQUEST')
@@ -134,13 +139,15 @@ def main():
     part_name = get_inputs('TYPE')
     part_name = part_name.split(',')
     changelog = GithubChangelog(ACCESS_TOKEN, REPO_NAME, PATH, BRANCH, PULL_REQUEST, COMMIT_MESSAGE, COMMITTER)
-    latest_tag = changelog.get_last_tag()
-    new_release_tag = create_tag(latest_tag,changelog.get_last_commit_message(), part_name ,changelog.read_releases())
-    if new_release_tag == latest_tag:
+    last_tag = changelog.get_last_tag()
+    new_release_tag = create_tag(last_tag,changelog.get_last_commit_message(), part_name ,changelog.read_releases())
+    if new_release_tag == last_tag:
         print("new release is not requried. Exiting workflow....")
-    release_message = changelog.get_release_message()
-    changelog.get_pull_request()
-    # changelog.create_release(new_release_tag,release_message)
+        
+    else:
+        release_message = changelog.get_release_message()
+        changelog.get_pull_request()
+        changelog.create_release(new_release_tag,release_message)
 
 if __name__ == '__main__':
     main()
