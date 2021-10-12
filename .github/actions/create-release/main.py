@@ -60,7 +60,7 @@ class GithubChangelog:
         tags = self.__repo.get_tags()
         return tags[0].name
 
-    def get_last_commit_message(self):
+    def get_last_commit_message(self, semver_type):
         # get latest commit
         releases = self.__repo.get_releases()
 
@@ -68,7 +68,9 @@ class GithubChangelog:
         commits = self.__repo.get_commits(sha=self.__branch)
         last_commit = commits[0]
         release_message = last_commit.commit.message
-        last_commit_message = last_commit.commit.message.split('\n\n')
+        last_commit_message = ''
+        if any(semver in release_message for semver in semver_type):
+            last_commit_message = last_commit.commit.message.split('\n\n')
         # last_commit_messag = last_commit.commit.message
         return last_commit_message
 
@@ -92,31 +94,26 @@ class GithubChangelog:
 
 def create_tag(tag, commit_message, semver_type, releases):
     
-    # check if any sementic version tag exist in commmit message
-    if any(semver in commit_message for semver in semver_type):
-        try:
-            tag_name = tag[1:].split('.')
-            tag_name = list(map(int, tag_name))
-            for commit in commit_message:
-                regex, name = commit.split(':')
-                if(regex =='feat'): 
-                    tag_name[1] = tag_name[1]+1
-                elif(regex =='fix'): 
-                    tag_name[2] = tag_name[2]+1
-                elif(regex =='breaking change'):
-                    tag_name[0] = tag_name[0]+1
+    try:
+        tag_name = tag[1:].split('.')
+        tag_name = list(map(int, tag_name))
+        for commit in commit_message:
+            regex, name = commit.split(':')
+            if(regex =='feat'): 
+                tag_name[1] = tag_name[1] + 1
+            elif(regex =='fix'): 
+                tag_name[2] = tag_name[2] + 1
+            elif(regex =='breaking change'):
+                tag_name[0] = tag_name[0] + 1
     
-            tag_name = list(map(str, tag_name))
-            new_tag = 'v' + ('.').join(tag_name)
-            print(new_tag)
-            print(commit_message)
-            print(semver_type)
-        except Exception as e:
-            print(e)
-    # if sementic versioning tag doesn't exist, return last tag
-    else:
-        new_tag = tag
-    
+        tag_name = list(map(str, tag_name))
+        new_tag = 'v' + ('.').join(tag_name)
+        print(new_tag)
+        print(commit_message)
+        print(semver_type)
+    except Exception as e:
+        print(e)
+
     return new_tag
 
 def main():
@@ -138,7 +135,9 @@ def main():
     part_name = part_name.split(',')
     changelog = GithubChangelog(ACCESS_TOKEN, REPO_NAME, PATH, BRANCH, PULL_REQUEST, COMMIT_MESSAGE, COMMITTER)
     last_tag = changelog.get_last_tag()
-    new_release_tag = create_tag(last_tag,changelog.get_last_commit_message(), part_name ,changelog.read_releases())
+    last_commit_message = changelog.get_last_commit_message(part_name)
+    if(last_commit_message != ''):
+        new_release_tag = create_tag(last_tag, last_commit_message, part_name ,changelog.read_releases())
     if new_release_tag == last_tag:
         print("new release is not requried. Exiting workflow....")
         
