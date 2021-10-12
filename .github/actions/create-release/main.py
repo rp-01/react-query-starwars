@@ -102,8 +102,8 @@ class GithubChangelog:
 
         
             
-def create_tag(tag, commit_message, semver_type, releases):
-    
+def create_tag(tag, commit_message, semver_type):
+    new_tag=tag
     try:
         tag_name = tag[1:].split('.')
         tag_name = list(map(int, tag_name))
@@ -147,7 +147,7 @@ def main():
     last_tag = changelog.get_last_tag()
     last_commit_message = changelog.get_last_commit_message(part_name)
     if(last_commit_message != ''):
-        new_release_tag = create_tag(last_tag, last_commit_message, part_name ,changelog.read_releases())
+        new_release_tag = create_tag(last_tag, last_commit_message, part_name)
         if new_release_tag == last_tag:
             print("new release is not requried. Exiting workflow....")
         
