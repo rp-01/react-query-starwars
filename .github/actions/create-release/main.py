@@ -87,7 +87,8 @@ class GithubChangelog:
         commits = self.__repo.get_commits(sha=self.__branch)
         for commit in commits:
             pulls = commit.get_pulls()
-        
+            for pull in pulls:
+                print(f'pull rq: {pull}')
 
 def create_tag(tag, commit_message, semver_type, releases):
     
