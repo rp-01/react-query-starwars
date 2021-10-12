@@ -96,7 +96,7 @@ class GithubChangelog:
                     release_message = f'- {pull.title}'+ '\n' + release_message
         print(f'release message: {release_message}')
         return release_message
-
+        #new comment
 
         
             
